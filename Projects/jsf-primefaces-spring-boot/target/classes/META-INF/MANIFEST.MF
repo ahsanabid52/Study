@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Built-By: Maira
+Build-Jdk: 9.0.4
+Implementation-Title: jsf-primefaces-spring-boot
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.codenotfound
+Implementation-Vendor: JoinFaces
+Implementation-URL: https://www.codenotfound.com/jsf-primefaces-exampl
+ e-spring-boot-maven.html
+Created-By: Maven Integration for Eclipse
+
