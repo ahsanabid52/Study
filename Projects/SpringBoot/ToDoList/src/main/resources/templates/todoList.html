@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Todo List</title>
+<link rel="stylesheet" th:href="@{/style.css}"></link>
+</head>
+<body>
+	<h2>Your ToDo List</h2>
+	<div th:unless="${#lists.isEmpty(todos)}">
+		<dt class="todoHeadline">
+			<p>Completed Todo Tasks</p>
+		</dt>
+
+
+		<table style="width: 100%">
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Description</th>
+			</tr>
+			<dl th:each="todo : ${todos}">
+				<tr>
+					<td>"${#todo.id}"</td>
+					<td>"${#todo.name}"</td>
+					<td>"${#todo.description}"</td>
+				</tr>
+			</dl>
+		</table>
+	</div>
+	<div th:if="${#lists.isEmpty(todos)}">
+		<p>You have no todos in your todo list</p>
+	</div>
+	<hr />
+	<h3>Add a todo</h3>
+	<form method="POST">
+
+		<label for="title">Task Name:</label> <input type="text"
+			name="name" size="20"> </input> <br /> <label for="description">Description:</label>
+		<input type="text" name="description" size="50"> </input> <br /> <br />
+		<input type="submit"></input>
+	</form>
+</body>
+</html>
