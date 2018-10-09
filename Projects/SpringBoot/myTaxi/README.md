@@ -26,5 +26,5 @@ Swagger menu above in the navigation bar redirects to the swagger page where we 
 
 Users menu above in the navigation bar shows us the users that are currently registerd with the myTaxi application.
 
-	Thanks!
-❤️❤️❤️Ahsan Abid Hassan❤️❤️❤️
+	    Thanks
+	Ahsan Abid Hassan
