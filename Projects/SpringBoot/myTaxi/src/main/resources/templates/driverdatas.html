@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>myTaxi</title>
+<th:block th:include="main"></th:block>
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+</head>
+<body>
+	<div class="container">
+		<h2>All Drivers Data</h2>
+		<a th:href="@{/driverdatas/add}" class="btn btn-primary">Add Driver Data</a>
+		<hr>
+		<span class="validation-message-error" th:utext="${errorMessage}"></span>
+		<span class="validation-message-success" th:utext="${successMessage}"></span>
+		<div th:if="${not #lists.isEmpty(driverdatas)}">
+			<table class="table table-striped">
+				<tr>
+					<th>Id</th>
+					<th>UserName</th>
+					<th>Password</th>
+					<th>Deleted</th>
+					<th>Online Status</th>
+					<th>Geocoordinate</th>
+					<th>Car Selected</th>
+					<th>Select A Car</th>
+					<th>DeSelect A Car</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+				<tr th:each="driverdata : ${driverdatas}">
+					<td th:text="${driverdata.id}">Id</td>
+					<td th:text="${driverdata.username}">UserName</td>
+					<td th:text="${driverdata.password}">Password</td>
+					<td th:text="${driverdata.deleted}">Deleted</td>
+					<td th:text="${driverdata.onlineStatus}">Online Status</td>
+					<td th:text="${driverdata.coordinate}">Geocoordinate</td>
+					<td th:text="${driverdata.carSelectedId}">Car Selected Id</td>
+					<td>
+					<form action="#" th:action="@{'/driverdatas/carSelect/'+ ${driverdata.id}}" th:object="${carInput}" method="post">
+						
+						  <p style="font-weight: bolder;font-size: 12px;">Car Id: 
+						<input type="text" th:field="*{selectedCarId}" style="width: 55px;" />
+						  </p>
+						<button type="submit" class="btn btn-primary">Select</button>
+					</form>
+						</td>
+					<td><a th:href="@{'/driverdatas/deselect/'+ ${driverdata.id}}" class="btn btn-danger">DeSelect</a></td>
+					<td><a th:href="@{'/driverdatas/edit/'+ ${driverdata.id}}" class="btn btn-primary">Edit</a></td>
+					<td><a th:href="@{'/driverdatas/delete/'+ ${driverdata.id}}" class="btn btn-danger">Delete</a></td>
+				</tr>
+			</table>
+		</div>
+		<hr>
+	</div>
+</body>
+</html>
