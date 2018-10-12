@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -48,23 +49,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
 
-        /* Working is commented        http
-            .authorizeRequests()
-            .antMatchers("/").permitAll()
-            .antMatchers("/login").permitAll()
-            .antMatchers("/registration").permitAll()
-            .antMatchers("/**").hasAuthority("ADMIN").anyRequest()
-            .authenticated().and().csrf().disable().formLogin()
-            .loginPage("/login").failureUrl("/login?error=true")
-            .defaultSuccessUrl("/main")
-            .usernameParameter("email")
-            .passwordParameter("password")
-            .and().logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/").and().exceptionHandling()
-            .accessDeniedPage("/access-denied");
-        */
-
         http
             .authorizeRequests()
             .antMatchers("/").permitAll()
@@ -84,14 +68,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
             .logoutSuccessUrl("/").and().exceptionHandling()
             .accessDeniedPage("/access-denied");
 
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+        http.sessionManagement().maximumSessions(1).expiredUrl("/login?expired").maxSessionsPreventsLogin(true);
+
     }
 
 
     @Override
     public void configure(WebSecurity web) throws Exception
     {
-        //        web.debug(true);
-
+        /*        for enabling web debugging log
+               web.debug(true);
+        */
         web
             .ignoring()
             .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");

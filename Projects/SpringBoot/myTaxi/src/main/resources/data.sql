@@ -3,6 +3,12 @@
  
 */
 
+INSERT INTO role VALUES (1,'ADMIN');
+
+ insert into  usere (active, email, name, password, user_id) values (1, 'admin@mytaxi.com', 'admin', '$2a$10$o22rSY.zsGBlsolA/Ctd6u49k6r/ojVsOw4SKKkPIEQ7QxhbmXA2.', 1);
+insert   into user_role  (user_id, role_id) values (1, 1);
+
+
 insert into car (id, name,model_year , date_created, deleted, license_plate, manufactured_in,company_name,seat_count,doors_count,convertible,rating,engine_type,car_status)
 values (seqC.nextval,'Mustang','2018', now(), false, 'LXH 1699','UAE', 'Ford',4,2,true,'EXCELLANT','GAS','AVAILABLE');
 
@@ -12,7 +18,6 @@ values (seqC.nextval,'Lamborghini','2018', now(), false, 'DX 5252','UAE', 'Lambo
 insert into car (id, name,model_year , date_created, deleted, license_plate, manufactured_in,company_name,seat_count,doors_count,convertible,rating,engine_type,car_status)
 values (seqC.nextval,'Corolla','2018', now(), false, 'TYT 2342','UAE', 'Toyota',4,4,false,'EXCELLANT','GAS','AVAILABLE');
 
-INSERT INTO role VALUES (1,'ADMIN');
 
 
 -- Create 3 OFFLINE drivers
