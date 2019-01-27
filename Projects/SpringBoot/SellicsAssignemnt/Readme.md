@@ -3,11 +3,6 @@
 
 
 
-Ahsan Abid Hassan
-ahsanabid52@gmail.com
-+971 553273615
-
-
 Description 
 
 I have implemented a micro service which inquires amazon API for a particular keyword that is provided in the rest web service url.
