@@ -30,27 +30,54 @@ public class KeywordServiceImpl implements KeywordService
     {
         int score = 0;
         ResponseInfo resp = null;
+        AmazonKeywordResponse aResp = null;
+        StringBuilder currentSearchValue = new StringBuilder();
+
+        // Searching for every character in the keyword and calculating a score.
+        char[] charArray = keyword.toCharArray();
+
+        // This functions mimics the search function in amazon and as we type and we see results in the amazon search box
+        // they results are shown and on every input of a character a new result set is shown.
+        // I search for the whole keyword by starting from the first character and then adding each character and searching.
+        // I will then give the score to the current search if the desired keyword appears in the result and according to its position.
+        // Small position indicates the desired result was among the first ones which is a success.
+        // So smaller the score the better.
+        for (int i = 0; i < charArray.length; i++)
+        {
+            currentSearchValue.append(charArray[i]);
+            aResp = callAmazonService(currentSearchValue.toString());
+            if (null != aResp && null != aResp.getResults() && (!aResp.getResults().isEmpty()))
+            {
+                int currSearchedCharacterScore = calculateScoreByOrderInResult(keyword, aResp.getResults());
+                score += currSearchedCharacterScore;
+            }
+        }
+        
+        resp = prepareResponse(keyword, score);
+
+        return resp;
+    }
+
+
+    /**
+     * This method calls the amazon service to get the matching results.
+     * 
+     * @param keyword
+     * @return
+     */
+    private AmazonKeywordResponse callAmazonService(String keyword)
+    {
         AmazonKeywordResponse response = null;
         RestTemplate restTemplate = new RestTemplate();
-
         try
         {
             response = getMappedObjectFromString(restTemplate.getForObject(AMAZON_URL + keyword, String.class));
-            System.out.println(response);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
-        if (null != response && null != response.getResults() && (!response.getResults().isEmpty()))
-        {
-            score = calculateScoreByOrderInResult(keyword, response.getResults());
-        }
-
-        resp = prepareResponse(keyword, score);
-
-        return resp;
+        return response;
     }
 
 
@@ -60,17 +87,18 @@ public class KeywordServiceImpl implements KeywordService
      * according to order/position in which the keyword was present.
      * 
      *  For example if the keyword is on the first position the score
-     *  will be 100.
-     *  For second postion the score will be 50.
-     *  For third postion the score will be 33.
+     *  will be 1.
+     *  For second postion the score will be 2.
+     *  For third postion the score will be 3.
      *   
-     * Score  =  100 / keyword position in the results.
+     * Score  =  keyword position in the results.
      * @param keyword that was searched
      * @param results results of the keyword search
      * @return
      */
     private int calculateScoreByOrderInResult(String keyword, List<String> results)
     {
+        // assigning it the size of the result set in case there is no match for the keyword.
         int position = results.size();
         for (int i = 0; i < results.size(); i++)
         {
@@ -80,7 +108,7 @@ public class KeywordServiceImpl implements KeywordService
                 break;
             }
         }
-        return 100 / position;
+        return position;
     }
 
 
